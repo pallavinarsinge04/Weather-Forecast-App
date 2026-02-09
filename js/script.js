@@ -1,28 +1,43 @@
-function getWeather() {
+function getLocationWeather() {
 
-    const city = document.getElementById("cityInput").value;
     const error = document.getElementById("error");
-    const card = document.getElementById("weatherCard");
 
-    if (city === "") {
-        error.innerText = "Please enter a city name";
-        card.style.display = "none";
+    if (!navigator.geolocation) {
+        error.innerText = "Geolocation is not supported by your browser.";
         return;
     }
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+    error.innerText = "Detecting your location...";
+
+    navigator.geolocation.getCurrentPosition(
+        successLocation,
+        errorLocation
+    );
+}
+
+function successLocation(position) {
+
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
+
+    fetchWeatherByCoords(url);
+}
+
+function errorLocation() {
+    document.getElementById("error").innerText =
+        "Unable to access your location. Please allow permission.";
+}
+
+function fetchWeatherByCoords(url) {
 
     fetch(url)
-        .then(response => response.json())
+        .then(res => res.json())
         .then(data => {
 
-            if (data.cod === "404") {
-                error.innerText = "City not found!";
-                card.style.display = "none";
-                return;
-            }
-
             document.getElementById("cityName").innerText = data.name;
+
             document.getElementById("temp").innerText =
                 `Temperature: ${data.main.temp} °C`;
 
@@ -35,13 +50,15 @@ function getWeather() {
             document.getElementById("wind").innerText =
                 `Wind Speed: ${data.wind.speed} m/s`;
 
-            error.innerText = "";
-            card.style.display = "block";
+            document.getElementById("error").innerText = "";
 
+            document.getElementById("weatherCard").style.display = "block";
         })
         .catch(() => {
-            error.innerText = "Something went wrong!";
-            card.style.display = "none";
+            document.getElementById("error").innerText =
+                "Failed to fetch location weather.";
         });
-
 }
+window.onload = () => {
+    getLocationWeather();
+};
