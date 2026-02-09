@@ -1,76 +1,242 @@
-/* Header */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+/* ===== GLOBAL STYLE ===== */
+
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-/* Toggle Button */
-#themeToggle {
-    border: none;
-    background: rgba(255,255,255,0.2);
-    color: white;
-    font-size: 18px;
-    padding: 6px 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: 0.3s;
+body {
+  margin: 0;
+
+  /* Background */
+  background-color: #F4F6F8;
+
+  /* Default Font Color */
+  color: #222222;
 }
 
-#themeToggle:hover {
-    background: rgba(255,255,255,0.3);
+
+/* ===== NAVBAR ===== */
+
+.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+
+  background-color: #333333;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-/* Light Mode */
-body.light {
-    background: linear-gradient(135deg, #fdfbfb, #ebedee);
+.navbar li {
+  float: left;
 }
 
-body.light .container {
-    background: rgba(255,255,255,0.85);
-    color: #222;
+.navbar li a {
+  display: block;
+
+  color: #FFFFFF;
+
+  text-align: center;
+
+  padding: 14px 20px;
+
+  text-decoration: none;
+
+  font-size: 16px;
+
+  transition: background 0.3s ease;
 }
 
-body.light .search-box {
-    background: #f1f1f1;
+/* Hover */
+
+.navbar li a:hover {
+  background-color: #111111;
 }
 
-body.light input {
-    color: #222;
+/* Active Page */
+
+.navbar li a.active {
+  background-color: #04AA6D;
+  font-weight: bold;
 }
 
-body.light input::placeholder {
-    color: #777;
+
+/* ===== CONTENT ===== */
+
+.content {
+  max-width: 900px;
+
+  margin: 40px auto;
+
+  padding: 30px;
+
+  background-color: #FFFFFF;
+
+  border-radius: 8px;
+
+  box-shadow: 0 0 12px #DDDDDD;
+
+  text-align: center;
 }
 
-body.light #themeToggle {
-    background: #ddd;
-    color: #333;
+/* Headings */
+
+.content h1 {
+  color: #222222;
+  margin-bottom: 15px;
 }
 
-body.light button {
-    background: #4CAF50;
-    color: white;
+.content h2 {
+  color: #333333;
 }
 
-body.light #error {
-    color: #e74c3c;
+/* Paragraph */
+
+.content p {
+  color: #555555;
+  font-size: 16px;
+  line-height: 1.6;
 }
-/* Location Button */
+
+
+/* ===== BUTTONS ===== */
+
+button {
+  background-color: #04AA6D;
+
+  color: #FFFFFF;
+
+  border: none;
+
+  padding: 10px 18px;
+
+  border-radius: 4px;
+
+  cursor: pointer;
+
+  font-size: 15px;
+
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #038E5C;
+}
+
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+
+  .navbar li {
+    float: none;
+  }
+
+  .navbar li a {
+    text-align: left;
+  }
+
+  .content {
+    margin: 20px;
+  }
+}
+/* ===== FOOTER ===== */
+
+.footer {
+  background-color: #333333;
+
+  color: #FFFFFF;
+
+  padding: 20px 10px;
+
+  margin-top: 350px;
+}
+
+.footer-content {
+  max-width: 1000px;
+
+  margin: auto;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  text-align: center;
+}
+
+.footer-content p {
+  margin: 5px 0;
+
+  font-size: 14px;
+}
+
+.footer-links a {
+  color: #FFFFFF;
+
+  text-decoration: none;
+
+  margin: 0 10px;
+
+  font-size: 14px;
+
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #04AA6D;
+}
+
+
+/* Mobile Responsive */
+
+@media (max-width: 768px) {
+
+  .footer-content {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+}
+/* ===== WEATHER UI ===== */
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+  margin-bottom: 15px;
+}
+
+.search-box input {
+  padding: 8px 12px;
+
+  width: 200px;
+
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
 .location-btn {
-    width: 100%;
-    margin-top: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 25px;
-    background: #00c6ff;
-    color: white;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.3s;
+  margin-bottom: 15px;
 }
 
-.location-btn:hover {
-    background: #009ef7;
+.weather-box {
+  display: none;
+
+  margin-top: 20px;
+
+  padding: 15px;
+
+  background: #F4F6F8;
+
+  border-radius: 6px;
+
+  box-shadow: 0 0 8px #DDDDDD;
 }
