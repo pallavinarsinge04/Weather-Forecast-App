@@ -1,64 +1,100 @@
-function getLocationWeather() {
+const API_KEY = "7854bd9a5d531a2ed0e328921b07d7fc";
 
-    const error = document.getElementById("error");
 
-    if (!navigator.geolocation) {
-        error.innerText = "Geolocation is not supported by your browser.";
-        return;
-    }
+// ===== City Search =====
 
-    error.innerText = "Detecting your location...";
+function getWeatherByCity() {
 
-    navigator.geolocation.getCurrentPosition(
-        successLocation,
-        errorLocation
-    );
-}
+  const city = document.getElementById("cityInput").value;
 
-function successLocation(position) {
-
-    const lat = position.coords.latitude;
-    const lon = position.coords.longitude;
-
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
-
-    fetchWeatherByCoords(url);
-}
-
-function errorLocation() {
+  if (city === "") {
     document.getElementById("error").innerText =
-        "Unable to access your location. Please allow permission.";
+      "Please enter city name";
+    return;
+  }
+
+  const url =
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+
+  fetchWeather(url);
 }
 
-function fetchWeatherByCoords(url) {
 
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
+// ===== Location =====
 
-            document.getElementById("cityName").innerText = data.name;
+function getWeatherByLocation() {
 
-            document.getElementById("temp").innerText =
-                `Temperature: ${data.main.temp} °C`;
+  if (!navigator.geolocation) {
+    document.getElementById("error").innerText =
+      "Location not supported";
+    return;
+  }
 
-            document.getElementById("condition").innerText =
-                `Condition: ${data.weather[0].description}`;
+  navigator.geolocation.getCurrentPosition((pos) => {
 
-            document.getElementById("humidity").innerText =
-                `Humidity: ${data.main.humidity}%`;
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
 
-            document.getElementById("wind").innerText =
-                `Wind Speed: ${data.wind.speed} m/s`;
+    const url =
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
 
-            document.getElementById("error").innerText = "";
+    fetchWeather(url);
 
-            document.getElementById("weatherCard").style.display = "block";
-        })
-        .catch(() => {
-            document.getElementById("error").innerText =
-                "Failed to fetch location weather.";
-        });
+  }, () => {
+
+    document.getElementById("error").innerText =
+      "Location permission denied";
+
+  });
+
 }
-window.onload = () => {
-    getLocationWeather();
-};
+
+
+// ===== Fetch Data =====
+
+function fetchWeather(url) {
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => showWeather(data))
+    .catch(() => {
+
+      document.getElementById("error").innerText =
+        "Error fetching weather";
+
+    });
+}
+
+
+// ===== Show Result =====
+
+function showWeather(data) {
+
+  if (data.cod == "404") {
+
+    document.getElementById("error").innerText =
+      "City not found";
+
+    return;
+  }
+
+  document.getElementById("cityName").innerText =
+    data.name;
+
+  document.getElementById("temp").innerText =
+    "🌡 Temperature: " + data.main.temp + " °C";
+
+  document.getElementById("condition").innerText =
+    "🌥 Condition: " + data.weather[0].description;
+
+  document.getElementById("humidity").innerText =
+    "💧 Humidity: " + data.main.humidity + "%";
+
+  document.getElementById("wind").innerText =
+    "💨 Wind Speed: " + data.wind.speed + " m/s";
+
+  document.getElementById("weatherResult").style.display =
+    "block";
+
+  document.getElementById("error").innerText = "";
+}
